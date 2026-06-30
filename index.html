@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Ansha 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: #0a0a0a;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: linear-gradient(to bottom, #1a0a14, #0a0a0a);
+        }
+
+        #countdownCanvas {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            opacity: 0;
+        }
+
+        .reveal-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            perspective: 1000px;
+        }
+
+        .reveal-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            color: #ff6b9d;
+            text-shadow: 
+                0 0 20px #ff1a6e,
+                0 0 40px #ff1a6e,
+                0 0 60px #ff1a6e,
+                0 0 80px #ff6b9d;
+            animation: glow 2s ease-in-out infinite alternate;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+
+        .reveal-title:hover {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.1);
+            text-shadow: 
+                0 0 30px #ff1a6e,
+                0 0 60px #ff1a6e,
+                0 0 90px #ff1a6e,
+                0 0 120px #ff6b9d,
+                5px 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 20px #ff1a6e,
+                    0 0 40px #ff1a6e,
+                    0 0 60px #ff1a6e,
+                    0 0 80px #ff6b9d;
+            }
+            to {
+                text-shadow: 
+                    0 0 30px #ff1a6e,
+                    0 0 60px #ff1a6e,
+                    0 0 90px #ff1a6e,
+                    0 0 120px #ff6b9d;
+            }
+        }
+
+        .gallery-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 4;
+            display: none;
+            overflow-y: auto;
+            padding: 2rem;
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 0;
+            perspective: 1500px;
+        }
+
+        .photo-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 0 30px rgba(255, 107, 157, 0.3),
+                0 0 60px rgba(255, 26, 110, 0.2);
+            border: 3px solid #ff6b9d;
+            opacity: 0;
+            transform: scale(0.8) translateY(50px);
+            animation: fadeInPhoto 0.8s ease forwards;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+        }
+
+        .photo-card canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .photo-card:hover {
+            transform: scale(1.1) translateZ(50px) rotateY(5deg) rotateX(5deg);
+            box-shadow: 
+                0 20px 80px rgba(255, 107, 157, 0.8),
+                0 10px 120px rgba(255, 26, 110, 0.6),
+                0 0 0 5px rgba(255, 107, 157, 0.3);
+            border-color: #fff0f6;
+        }
+
+        .photo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                transparent 50%, 
+                rgba(255, 107, 157, 0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .photo-card:hover::before {
+            opacity: 1;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .photo-card:hover img {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeInPhoto {
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .message-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 5;
+            padding: 3rem;
+            background: linear-gradient(to top, rgba(26, 10, 20, 0.98), transparent);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .message-text {
+            max-width: 800px;
+            margin: 0 auto;
+            color: #ffe0ee;
+            font-size: 1.3rem;
+            line-height: 2;
+            text-align: center;
+            font-weight: 300;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+
+        .message-text::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+            color: #ff6b9d;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .cake-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 6;
+            opacity: 0;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .cake {
+            font-size: 8rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 20px #ff6b9d);
+        }
+
+        .cake:hover {
+            transform: scale(1.1);
+        }
+
+        .cake-text {
+            color: #ffe0ee;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 0 0 10px #ff6b9d;
+        }
+
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            font-size: 20px;
+            color: #ff6b9d;
+            animation: floatHeart 2s ease-out forwards;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) rotate(360deg);
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        .music-toggle {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .reveal-title {
+                font-size: 3rem;
+            }
+            
+            .message-text {
+                font-size: 1.1rem;
+                padding: 1rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+            
+            .photo-card img {
+                height: 300px;
+            }
+            
+            .cake {
+                font-size: 5rem;
+            }
+        }
+
+        .skip-button {
+            display: none;
+        }
+        
+        .start-button {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background: linear-gradient(135deg, #ff6b9d, #ff1a6e);
+            border: 3px solid #fff0f6;
+            color: #ffffff;
+            padding: 20px 50px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            box-shadow: 
+                0 0 30px rgba(255, 107, 157, 0.8),
+                0 0 60px rgba(255, 26, 110, 0.5);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .start-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 
+                0 0 50px rgba(255, 107, 157, 1),
+                0 0 100px rgba(255, 26, 110, 0.8);
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 
+                    0 0 30px rgba(255, 107, 157, 0.8),
+                    0 0 60px rgba(255, 26, 110, 0.5);
+            }
+            50% {
+                box-shadow: 
+                    0 0 50px rgba(255, 107, 157, 1),
+                    0 0 100px rgba(255, 26, 110, 0.8);
+            }
+        }
+        
+        .start-button.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Rain Canvas -->
+    <canvas id="matrixCanvas"></canvas>
+    
+    <!-- Countdown Canvas -->
+    <canvas id="countdownCanvas" width="400" height="400"></canvas>
+    
+    <!-- Reveal Container -->
+    <div class="reveal-container" id="revealContainer">
+        <h1 class="reveal-title">Happy Birthday Ansha!</h1>
+    </div>
+    
+    <!-- Gallery Container -->
+    <div class="gallery-container" id="galleryContainer">
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Photos will be dynamically inserted here -->
+        </div>
+    </div>
+    
+    <!-- Message Container -->
+    <div class="message-container" id="messageContainer">
+        <p class="message-text" id="messageText"></p>
+    </div>
+    
+    <!-- Cake Container -->
+    <div class="cake-container" id="cakeContainer">
+        <div class="cake" id="cake">🎂</div>
+        <p class="cake-text">Click to make a wish! 🕯️</p>
+    </div>
+    
+    <!-- Background Music -->
+    <audio id="bgMusic">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="textMusic" autoplay>
+        <source src="music2.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Start Button -->
+    <button class="start-button" id="startButton">Click Me</button>
+    
+    <!-- Skip Button -->
+    <button class="skip-button" id="skipButton">Skip Intro ⏭️</button>
+
+    <script>
+        // =====================================================
+        // CONFIGURATION
+        // =====================================================
+        const config = {
+            photos: [
+                'Photo1.jpeg',
+                'Photo2.jpeg',
+                'Photo3.jpeg',
+                'Photo4.jpeg',
+                'Photo5.jpeg',
+                'Photo6.jpeg',
+                'Photo7.jpeg',
+                'Photo8.jpeg'
+            ],
+            message: `Dear Ansha, on this special day, I want you to know how incredibly amazing you are. Your smile lights up every room, your kindness touches every heart, and your presence makes the world a better place. May this year bring you endless joy, wonderful adventures, and all the happiness you deserve. Here's to another year of beautiful memories together! 🌟💖✨`,
+            musicUrl: '' // Optional: Add a music URL here
+        };
+
+        // =====================================================
+        // PHASE 1: MATRIX RAIN
+        // =====================================================
+        const matrixCanvas = document.getElementById('matrixCanvas');
+        const matrixCtx = matrixCanvas.getContext('2d');
+
+        matrixCanvas.width = window.innerWidth;
+        matrixCanvas.height = window.innerHeight;
+
+        const chars = 'HAPPYBIRTHDAYANSHA'.split('');
+        const fontSize = 16;
+        const columns = matrixCanvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        let matrixRunning = true;
+
+        function drawMatrix() {
+            if (!matrixRunning) return;
+
+            matrixCtx.fillStyle = 'rgba(26, 10, 20, 0.05)';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+            matrixCtx.fillStyle = '#ff6b9d';
+            matrixCtx.font = fontSize + 'px Courier New';
+
+            for (let i = 0; i < drops.length; i++) {
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                matrixCtx.fillText(char, x, y);
+
+                if (y > matrixCanvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                drops[i]++;
+            }
+        }
+
+        let matrixInterval = setInterval(drawMatrix, 80);
+
+        // =====================================================
+        // PHASE 2: COUNTDOWN
+        // =====================================================
+        const countdownCanvas = document.getElementById('countdownCanvas');
+        const countdownCtx = countdownCanvas.getContext('2d');
+
+        function drawDotMatrixNumber(num) {
+            countdownCtx.clearRect(0, 0, countdownCanvas.width, countdownCanvas.height);
+            
+            const dotSize = 10;
+            const gap = 5;
+            const gridSize = dotSize + gap;
+            
+            const patterns = {
+                '3': [
+                    [1,1,1,1,1],
+                    [0,0,0,0,1],
+                    [1,1,1,1,1],
+                    [0,0,0,0,1],
+                    [1,1,1,1,1]
+                ],
+                '2': [
+                    [1,1,1,1,1],
+                    [0,0,0,0,1],
+                    [1,1,1,1,1],
+                    [1,0,0,0,0],
+                    [1,1,1,1,1]
+                ],
+                '1': [
+                    [0,0,1,0,0],
+                    [0,1,1,0,0],
+                    [0,0,1,0,0],
+                    [0,0,1,0,0],
+                    [1,1,1,1,1]
+                ]
+            };
+            
+            const pattern = patterns[num.toString()];
+            const offsetX = (countdownCanvas.width - (5 * gridSize)) / 2;
+            const offsetY = (countdownCanvas.height - (5 * gridSize)) / 2;
+            
+            for (let row = 0; row < 5; row++) {
+                for (let col = 0; col < 5; col++) {
+                    if (pattern[row][col] === 1) {
+                        const gradient = countdownCtx.createRadialGradient(
+                            offsetX + col * gridSize + dotSize/2,
+                            offsetY + row * gridSize + dotSize/2,
+                            0,
+                            offsetX + col * gridSize + dotSize/2,
+                            offsetY + row * gridSize + dotSize/2,
+                            dotSize
+                        );
+                        gradient.addColorStop(0, '#ffffff');
+                        gradient.addColorStop(0.5, '#eeeeee');
+                        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                        
+                        countdownCtx.fillStyle = gradient;
+                        countdownCtx.beginPath();
+                        countdownCtx.arc(
+                            offsetX + col * gridSize + dotSize/2,
+                            offsetY + row * gridSize + dotSize/2,
+                            dotSize/2,
+                            0,
+                            Math.PI * 2
+                        );
+                        countdownCtx.fill();
+                        
+                        countdownCtx.shadowColor = '#ffffff';
+                        countdownCtx.shadowBlur = 20;
+                    }
+                }
+            }
+        }
+
+        async function runCountdown() {
+            return new Promise((resolve) => {
+                countdownCanvas.style.opacity = '1';
+                const numbers = [3, 2, 1];
+                let index = 0;
+
+                function showNext() {
+                    if (index < numbers.length) {
+                        drawDotMatrixNumber(numbers[index]);
+                        playChime();
+                        index++;
+                        setTimeout(showNext, 1000);
+                    } else {
+                        countdownCanvas.style.opacity = '0';
+                        setTimeout(resolve, 500);
+                    }
+                }
+
+                showNext();
+            });
+        }
+
+        // =====================================================
+        // PHASE 3: BIG REVEAL
+        // =====================================================
+        async function showReveal() {
+            return new Promise((resolve) => {
+                const revealContainer = document.getElementById('revealContainer');
+                revealContainer.style.opacity = '1';
+                revealContainer.style.pointerEvents = 'auto';
+                
+                // music2.mp3 is already playing from page load (autoplay attribute)
+                
+                playChime(true);
+                createHeartBurst(window.innerWidth / 2, window.innerHeight / 2, 30);
+                
+                setTimeout(resolve, 3000);
+            });
+        }
+
+        // =====================================================
+        // PHASE 4: PHOTO GALLERY
+        // =====================================================
+        async function showGallery() {
+            return new Promise((resolve) => {
+                const galleryContainer = document.getElementById('galleryContainer');
+                const galleryGrid = document.getElementById('galleryGrid');
+                const revealContainer = document.getElementById('revealContainer');
+                
+                revealContainer.style.opacity = '0';
+                
+                setTimeout(() => {
+                    matrixRunning = false;
+                    matrixCtx.fillStyle = 'rgba(10, 10, 10, 0.95)';
+                    matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                    
+                    galleryContainer.style.display = 'block';
+                    
+                    // Display photos one by one with delay
+                    config.photos.forEach((photo, index) => {
+                        setTimeout(() => {
+                            const card = document.createElement('div');
+                            card.className = 'photo-card';
+                            card.style.animationDelay = '0s';
+                            
+                            // All 8 photos get tearing effect
+                            // Photos 1-4 (index 0-3): Photo 5-8 on top, Photo 1-4 underneath
+                            // Photos 5-8 (index 4-7): Photo 1-4 on top, Photo 5-8 underneath
+                            
+                            let topPhotoIndex, bottomPhotoIndex;
+                            
+                            if (index < 4) {
+                                // First 4 cards: Photos 5-8 on top, 1-4 underneath
+                                topPhotoIndex = index + 4; // Photo 5-8
+                                bottomPhotoIndex = index; // Photo 1-4
+                            } else {
+                                // Last 4 cards: Photos 1-4 on top, 5-8 underneath
+                                topPhotoIndex = index - 4; // Photo 1-4
+                                bottomPhotoIndex = index; // Photo 5-8
+                            }
+                            
+                            // Create layered tearing effect
+                            const bottomImg = document.createElement('img');
+                            bottomImg.src = config.photos[bottomPhotoIndex];
+                            bottomImg.alt = `Hidden Memory ${index + 1}`;
+                            bottomImg.style.position = 'absolute';
+                            bottomImg.style.top = '0';
+                            bottomImg.style.left = '0';
+                            bottomImg.style.zIndex = '1';
+                            
+                            const topImg = document.createElement('img');
+                            topImg.src = config.photos[topPhotoIndex];
+                            topImg.alt = `Memory ${index + 1}`;
+                            topImg.style.position = 'relative';
+                            topImg.style.zIndex = '2';
+                            
+                            card.appendChild(bottomImg);
+                            card.appendChild(topImg);
+                            
+                            // Create canvas for tearing effect
+                            const canvas = document.createElement('canvas');
+                            canvas.style.zIndex = '3';
+                            card.appendChild(canvas);
+                            
+                            // Initialize tearing effect after images load
+                            topImg.onload = () => {
+                                initTearingEffect(card, topImg, bottomImg, canvas);
+                            };
+                            
+                            galleryGrid.appendChild(card);
+                            
+                            card.addEventListener('click', (e) => {
+                                createHeartBurst(e.clientX, e.clientY, 15);
+                            });
+                        }, index * 500); // 500ms gap between each photo
+                    });
+                    
+                    // Wait for all photos to appear
+                    setTimeout(resolve, config.photos.length * 500 + 1000);
+                }, 500);
+            });
+        }
+
+        // =====================================================
+        // TEARING EFFECT - Progressive Trail Reveal
+        // =====================================================
+        function initTearingEffect(card, topImg, bottomImg, canvas) {
+            const ctx = canvas.getContext('2d');
+            let isInteracting = false;
+            let tearTrail = []; // Store all tear points to create accumulated tear effect
+            
+            // Set canvas size to match card
+            function resizeCanvas() {
+                canvas.width = card.offsetWidth;
+                canvas.height = card.offsetHeight;
+            }
+            resizeCanvas();
+            
+            // Get coordinates relative to card
+            function getRelativeCoords(e) {
+                const rect = card.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: clientX - rect.left,
+                    y: clientY - rect.top
+                };
+            }
+            
+            // Generate irregular torn edge for a single point
+            function generateTornPatch(cx, cy, radius) {
+                const points = [];
+                const segments = 16;
+                
+                for (let i = 0; i < segments; i++) {
+                    const angle = (i / segments) * Math.PI * 2;
+                    const randomRadius = radius + (Math.random() - 0.5) * 15;
+                    const waveOffset = Math.sin(i * 1.5) * 8;
+                    const x = cx + Math.cos(angle) * (randomRadius + waveOffset);
+                    const y = cy + Math.sin(angle) * (randomRadius + waveOffset);
+                    points.push({ x, y });
+                }
+                
+                return points;
+            }
+            
+            // Update tear mask with accumulated trail
+            function updateTear(x, y) {
+                // Add new tear point to trail
+                tearTrail.push({ x, y, radius: 35 });
+                
+                // Limit trail length for performance (keep last 50 points)
+                if (tearTrail.length > 50) {
+                    tearTrail.shift();
+                }
+                
+                // Build complete path data from all tear points
+                let completePath = '';
+                
+                tearTrail.forEach(point => {
+                    const patchPoints = generateTornPatch(point.x, point.y, point.radius);
+                    
+                    if (patchPoints.length > 0) {
+                        completePath += `M ${patchPoints[0].x} ${patchPoints[0].y} `;
+                        for (let i = 1; i < patchPoints.length; i++) {
+                            completePath += `L ${patchPoints[i].x} ${patchPoints[i].y} `;
+                        }
+                        completePath += 'Z ';
+                    }
+                });
+                
+                // Create SVG mask with accumulated tears
+                const maskSVG = `data:image/svg+xml,${encodeURIComponent(`
+                    <svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
+                        <defs>
+                            <mask id="tornMask">
+                                <rect width="100%" height="100%" fill="white"/>
+                                <path d="${completePath}" fill="black"/>
+                            </mask>
+                        </defs>
+                        <rect width="100%" height="100%" fill="white" mask="url(#tornMask)"/>
+                    </svg>
+                `)}`;
+                
+                topImg.style.webkitMaskImage = `url("${maskSVG}")`;
+                topImg.style.maskImage = `url("${maskSVG}")`;
+                topImg.style.webkitMaskSize = 'cover';
+                topImg.style.maskSize = 'cover';
+            }
+            
+            // Restore original state
+            function restoreTear() {
+                isInteracting = false;
+                tearTrail = []; // Clear the trail
+                
+                // Smooth restoration
+                topImg.style.transition = 'all 0.3s ease-out';
+                topImg.style.webkitMaskImage = 'none';
+                topImg.style.maskImage = 'none';
+                
+                setTimeout(() => {
+                    topImg.style.transition = '';
+                }, 300);
+            }
+            
+            // Mouse events (desktop)
+            card.addEventListener('mouseenter', (e) => {
+                isInteracting = true;
+                tearTrail = []; // Reset trail on enter
+                const coords = getRelativeCoords(e);
+                updateTear(coords.x, coords.y);
+            });
+            
+            card.addEventListener('mousemove', (e) => {
+                if (!isInteracting) return;
+                const coords = getRelativeCoords(e);
+                updateTear(coords.x, coords.y);
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                restoreTear();
+            });
+            
+            // Touch events (mobile)
+            card.addEventListener('touchstart', (e) => {
+                isInteracting = true;
+                tearTrail = []; // Reset trail on touch start
+                const coords = getRelativeCoords(e);
+                updateTear(coords.x, coords.y);
+            }, { passive: true });
+            
+            card.addEventListener('touchmove', (e) => {
+                if (!isInteracting) return;
+                const coords = getRelativeCoords(e);
+                updateTear(coords.x, coords.y);
+            }, { passive: true });
+            
+            card.addEventListener('touchend', () => {
+                restoreTear();
+            });
+            
+            card.addEventListener('touchcancel', () => {
+                restoreTear();
+            });
+            
+            // Handle resize
+            window.addEventListener('resize', resizeCanvas);
+        }
+
+        // =====================================================
+        // PHASE 5: TYPEWRITER MESSAGE
+        // =====================================================
+        async function typewriterMessage() {
+            return new Promise((resolve) => {
+                const messageContainer = document.getElementById('messageContainer');
+                const messageText = document.getElementById('messageText');
+                
+                messageContainer.style.opacity = '1';
+                
+                // music2.mp3 is already playing from the reveal phase
+                
+                let index = 0;
+                const text = config.message;
+                
+                function type() {
+                    if (index < text.length) {
+                        messageText.textContent = text.substring(0, index + 1);
+                        index++;
+                        setTimeout(type, 50);
+                    } else {
+                        messageText.style.removeProperty('content');
+                        setTimeout(resolve, 1000);
+                    }
+                }
+                
+                type();
+            });
+        }
+
+        // =====================================================
+        // CAKE REVEAL
+        // =====================================================
+        async function showCake() {
+            return new Promise((resolve) => {
+                const cakeContainer = document.getElementById('cakeContainer');
+                const cake = document.getElementById('cake');
+                
+                cakeContainer.style.opacity = '1';
+                cakeContainer.style.pointerEvents = 'auto';
+                
+                cake.addEventListener('click', () => {
+                    console.log('Cake clicked!');
+                    createConfetti();
+                    playFinalMusic(); // Stop music2.mp3 and play music.mp3 for 30 sec
+                    cake.textContent = '🎉';
+                    cakeContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        cakeContainer.style.pointerEvents = 'none';
+                    }, 1000);
+                }, { once: true });
+                
+                setTimeout(resolve, 500);
+            });
+        }
+
+        // =====================================================
+        // PARTICLE EFFECTS
+        // =====================================================
+        function createHeartBurst(x, y, count) {
+            const hearts = ['💖', '💕', '💗', '💝', '💓', '💞'];
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                
+                const angle = (Math.random() * Math.PI * 2);
+                const distance = Math.random() * 100 + 50;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                
+                heart.style.setProperty('--dx', dx + 'px');
+                heart.style.setProperty('--dy', dy + 'px');
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 2000);
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#ff1a6e', '#ffe0ee', '#fff0f6', '#ff69b4'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        // =====================================================
+        // AUDIO
+        // =====================================================
+        const bgMusic = document.getElementById('bgMusic');
+        const textMusic = document.getElementById('textMusic');
+        
+        // Set volume for music2.mp3 (already autoplaying)
+        textMusic.volume = 0.5;
+        
+        // Manually loop music2.mp3 so we can stop it reliably
+        textMusic.addEventListener('ended', function() {
+            if (!textMusic.paused) {
+                this.currentTime = 0;
+                this.play();
+            }
+        });
+        
+        function playChime(big = false) {
+            // Removed beep sounds
+        }
+        
+        // Stop music2.mp3 and play music.mp3 for 30 seconds
+        function playFinalMusic() {
+            console.log('playFinalMusic called - stopping music2.mp3');
+            
+            // Stop music2.mp3 completely
+            const textMusicElement = document.getElementById('textMusic');
+            textMusicElement.pause();
+            textMusicElement.currentTime = 0;
+            textMusicElement.volume = 0;
+            textMusicElement.src = ''; // Remove source to fully stop it
+            
+            console.log('music2.mp3 stopped, starting music.mp3');
+            
+            // Play music.mp3
+            const bgMusicElement = document.getElementById('bgMusic');
+            bgMusicElement.volume = 0.5;
+            const playPromise = bgMusicElement.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('music.mp3 started playing successfully');
+                }).catch(err => {
+                    console.log('Music playback error:', err);
+                });
+            }
+            
+            // Stop music.mp3 after 30 seconds
+            setTimeout(() => {
+                console.log('30 seconds elapsed, stopping music.mp3');
+                bgMusicElement.pause();
+                bgMusicElement.currentTime = 0;
+            }, 30000);
+        }
+
+        // =====================================================
+        // CLICK INTERACTIONS
+        // =====================================================
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.photo-card') && 
+                !e.target.closest('.cake') && 
+                !e.target.closest('.music-toggle') &&
+                !e.target.closest('.skip-button')) {
+                createHeartBurst(e.clientX, e.clientY, 5);
+            }
+        });
+
+        // =====================================================
+        // MAIN SEQUENCE
+        // =====================================================
+        let sequenceComplete = false;
+
+        async function runSequence() {
+            if (sequenceComplete) return;
+            
+            // Wait 3 seconds for matrix rain
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            
+            // Phase 2: Countdown
+            await runCountdown();
+            
+            // Phase 3: Big Reveal (music2.mp3 starts here)
+            await showReveal();
+            
+            // Phase 4: Photo Gallery
+            await showGallery();
+            
+            // Phase 5: Typewriter Message
+            await typewriterMessage();
+            
+            // Phase 6: Cake
+            await showCake();
+            
+            sequenceComplete = true;
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+        });
+
+        // Start the experience
+        window.addEventListener('load', () => {
+            const startButton = document.getElementById('startButton');
+            
+            startButton.addEventListener('click', () => {
+                // Start music2.mp3
+                textMusic.play().then(() => {
+                    console.log('music2.mp3 started successfully');
+                }).catch(err => {
+                    console.log('Error starting music:', err);
+                });
+                
+                // Hide start button
+                startButton.classList.add('hidden');
+                
+                // Start the main sequence
+                setTimeout(runSequence, 500);
+            });
+        });
+    </script>
+</body>
+</html>
